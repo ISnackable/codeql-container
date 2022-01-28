@@ -34,10 +34,10 @@ class CodeQL:
         download_url = None
         download_path = None
         if os_name == 'posix':
-            download_url = f'https://github.com/github/codeql-cli-binaries/releases/download/{github_version.title}/codeql-linux64.zip'
+            download_url = f'{self.CODEQL_GITHUB_URL}/releases/download/{github_version.title}/codeql-linux64.zip'
             download_path = f'{self.TEMP_DIR}/codeql_linux.zip'
         elif os_name == 'nt':
-            download_url = f'https://github.com/github/codeql-cli-binaries/releases/download/{github_version.title}/codeql-win64.zip'
+            download_url = f'{self.CODEQL_GITHUB_URL}/releases/download/{github_version.title}/codeql-win64.zip'
             download_path = f'{self.TEMP_DIR}/codeql_windows.zip'
         else:
             exit(self.ERROR_UNKNOWN_OS)
@@ -68,6 +68,7 @@ class CodeQL:
         if ret_string is CalledProcessError:
             logger.error("Could not run codeql command")
             exit(self.ERROR_EXECUTING_CODEQL)
+            
         version_match = search("toolchain release ([0-9.]+)\.", ret_string)
         if not version_match:
             logger.error("Could not determine existing codeql version")
